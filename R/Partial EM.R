@@ -51,7 +51,7 @@ PEM <- function(X, SIGMA, m, options){
     DualALM_result <- DualALM(L,options)
     obj <- DualALM_result$obj
     x <- DualALM_result$x##weights
-    cat(sprintf("iter = %d, log-likelihood = %5.8e \n", k, obj[1]))
+    cat(sprintf("iter = %d, log-likelihood = %5.8e \n", k, -obj[1]))
     ##check convergence
     if (k>1){
       options$init_opt <- x
