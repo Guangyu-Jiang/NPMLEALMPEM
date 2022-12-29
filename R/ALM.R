@@ -1,4 +1,3 @@
-#' Main function for Augmented Lagrange Multiplier
 #' Input parameters:
 #' L: a nonnegative n*m matrix
 #' options: optional input parameter list containing several elements
