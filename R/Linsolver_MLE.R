@@ -6,6 +6,7 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
   eps <- 2.2204e-16
   J <- v2 > 0
   r <- sum(J)
+  cat(sprintf(' %2.1f', r))
   par$r <- r
   solveby <- 'pcg'  ## iterative solver cg
   if (n <= 5000){
@@ -32,6 +33,11 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
       }
       cholLLT <- chol(LLT)
     }
+    print("Dim of cholLLT:")
+    print(dim(cholLLT))
+    print("dim of rhs:")
+    print(dim(rhs*(n^2/sigma)))
+
     dv <- mylinsysolve(cholLLT, rhs*(n^2/sigma))
     resnrm <- 0
     solve_ok <- 1
@@ -57,6 +63,7 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
     solve_ok <- result_psqmr$solve_ok
   }
   if (solveby == 'ddirect'){
+    par$approxL=0
     rhs <- rhs*(n^2/sigma)
     prox_v1_prime_m <- prox_v1_prime_m + eps
     if (par$approxL){
@@ -68,6 +75,7 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
       for (i in 1:r){
         LTL[i,i] <- LTL[i,i] + 1
       }
+      print(dim(LTL))
       if (r<=1000){
         dv <- solve(LTL)%*%rhstmp
       }else {
@@ -87,14 +95,23 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
       rhstmp <- t(t(rhs)%*%LJ2)
       LTL <- t(LJ)%*%LJ2
       LTL <- diag(r) + LTL
-      if (r <= 1000){
-        dv = solve(LTL)%*%rhstmp
+      print(dim(LTL))
+      message(paste('ok made it this far with r=',r))
+      flush.console()
+      if(r==0){
+        dv <- rhs/prox_v1_prime_m
+      }else if (r <= 1000){
+        dv <- solve(LTL)%*%rhstmp
+        dv <- LJ2%*%dv
+        dv <- rhs/prox_v1_prime_m - dv
       }else{
         cholLTL <- chol(LTL)
         dv <- mylinsysolve(cholLTL,rhstmp)
+        dv <- LJ2%*%dv
+        dv <- rhs/prox_v1_prime_m - dv
       }
-      dv <- LJ2%*%dv
-      dv <- rhs/prox_v1_prime_m - dv
+      #dv <- LJ2%*%dv
+      #dv <- rhs/prox_v1_prime_m - dv
     }
     resnrm <- 0
     solve_ok <- 1
