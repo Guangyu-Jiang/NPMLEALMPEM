@@ -157,7 +157,7 @@ DualALM <- function(L, options){
     xnew <- 0.5 * sigma * matrix(1, m, 1)
     ynew <- rowSums(L) / m
     unew <- 1 / ynew
-    vnew <- matrix(0, n, 1)
+    vnew <- matrix(2.2204e-16, n, 1)
   }
   Lx <- LL$times(xnew)
   tmp <- LL$trans(1 / Lx) / n - 1
