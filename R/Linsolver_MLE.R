@@ -6,7 +6,6 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
   eps <- 2.2204e-16
   J <- v2 > 0
   r <- sum(J)
-  cat(sprintf(' %2.1f', r))
   par$r <- r
   solveby <- 'pcg'  ## iterative solver cg
   if (n <= 5000){
@@ -14,6 +13,9 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
   }
   if (r < 2000 | (n > 5000 & r < 5000)){
     solveby = 'ddirect'  ## woodbury formula
+  }
+  if (r==0){
+    solveby <- 'none'
   }
   if (solveby == 'pdirect'){
     if (par$approxL){
@@ -50,8 +52,7 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
       Afun <- function(v){
         return((prox_v1_prime_m*v + U%*%t(t(VJ%*%t(t(v)%*%U))%*%VJ))*(sigma/n^2))
       }
-    }
-    else {
+    }else {
       LJ <- LL$matrix[,J]
       Afun <- function(v){
         return((prox_v1_prime_m*v + LJ%*%(t(LJ)%*%v))*(sigma/n^2))
@@ -95,26 +96,23 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
       rhstmp <- t(t(rhs)%*%LJ2)
       LTL <- t(LJ)%*%LJ2
       LTL <- diag(r) + LTL
-      print(dim(LTL))
-      message(paste('ok made it this far with r=',r))
-      flush.console()
-      if(r==0){
-        dv <- rhs/prox_v1_prime_m
-      }else if (r <= 1000){
+      if (r <= 1000){
         dv <- solve(LTL)%*%rhstmp
-        dv <- LJ2%*%dv
-        dv <- rhs/prox_v1_prime_m - dv
       }else{
         cholLTL <- chol(LTL)
         dv <- mylinsysolve(cholLTL,rhstmp)
-        dv <- LJ2%*%dv
-        dv <- rhs/prox_v1_prime_m - dv
       }
-      #dv <- LJ2%*%dv
-      #dv <- rhs/prox_v1_prime_m - dv
+      dv <- LJ2%*%dv
+      dv <- rhs/prox_v1_prime_m - dv
     }
+    resnrm <- 0
+    solve_ok <- 1
+  }
+  if (solveby=='none'){
+    dv <- rhs/prox_v1_prime_m
     resnrm <- 0
     solve_ok <- 1
   }
   return(list(dv = dv, resnrm = resnrm, solve_ok = solve_ok, par = par))
 }
+
