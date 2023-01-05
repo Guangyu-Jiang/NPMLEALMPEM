@@ -27,9 +27,9 @@ select_grid <- function(X, grid_option, m){
     ymin <- min(X[, 2])
     my <- round(sqrt(m))
     mx <- round(sqrt(m))
-    xgrid <- seq(xmin, xmax, (xmax-xmin)/mx)
-    ygrid = seq(ymin, ymax, (ymax-ymin)/mx)
-    meshgrid <- meshgrid(xgrid, ygrid)
+    xgrid <- seq(xmin, xmax, mx)
+    ygrid = seq(ymin, ymax, my)
+    meshgrid <- pracma::meshgrid(xgrid, ygrid)
     U <- cbind(c(meshgrid$X), c(meshgrid$Y))
   }
   if (grid_option == 4){
@@ -39,9 +39,10 @@ select_grid <- function(X, grid_option, m){
     ymin <- min(X[, 2])
     my <- round(sqrt(m))
     mx <- round(sqrt(m))
-    xgrid <- seq(xmin, xmax, (xmax-xmin)/mx)
-    ygrid = logseq(ymin, ymax, my)
-    meshgrid <- meshgrid(xgrid, ygrid)
+    xgrid <- seq(xmin, xmax, mx)
+    ygrid <- 10 ^ seq(from = log10(ymin), to = log10(ymax), length.out = my)
+    #ygrid = pracma::logseq(ymin, ymax, (ymax-ymin)/my)
+    meshgrid <- pracma::meshgrid(xgrid, ygrid)
     U <- cbind(c(meshgrid$X), c(meshgrid$Y))
   }
   return(list(U = U, m = m))
