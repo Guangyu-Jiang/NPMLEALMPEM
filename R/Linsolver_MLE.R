@@ -14,7 +14,7 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
   if (r < 2000 | (n > 5000 & r < 5000)){
     solveby = 'ddirect'  ## woodbury formula
   }
-  if (r==0){
+  if (r == 0){
     solveby <- 'none'
   }
   if (solveby == 'pdirect'){
@@ -24,14 +24,14 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
       VJ <- V[J, ]
       LLT <- U%*%(t(VJ)%*%VJ)%*%t(U)
       for (i in 1:n){
-        LLT[i,i] <- LLT[i,i] + prox_v1_prime_m[i]
+        LLT[i, i] <- LLT[i, i] + prox_v1_prime_m[i]
       }
       cholLLT <- chol(LLT)
     }else{
-      LJ <- LL$matrix[,J]
+      LJ <- LL$matrix[, J]
       LLT <- LJ%*%t(LJ)
       for (i in 1:n){
-        LLT[i,i] <- LLT[i,i] + prox_v1_prime_m[i]
+        LLT[i, i] <- LLT[i, i] + prox_v1_prime_m[i]
       }
       cholLLT <- chol(LLT)
     }
