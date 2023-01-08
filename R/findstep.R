@@ -72,7 +72,7 @@ findstep <- function(Grad, dv, LTdv, LL, phi0, v1input0, prox_v10,
   Lprox_v2 <- LL$times(prox_v2)
   par$count_L <- par$count_L + 1
   if (printyes & iter==maxit){
-    cat(sprintf('m'))
+    #cat(sprintf('m'))
   }
   return(list(phi = phi, v1input = v1input, prox_v1 = prox_v1,
               prox_v1_prime_m = prox_v1_prime_m, v2input = v2input,
