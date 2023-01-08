@@ -30,19 +30,19 @@ likelihood_matrix <- function(X, U, SIGMA, normalizerows, restrict_dist){
   removeind <- c()
   sz <- length(dim(SIGMA))
   for (i in 1:n){
-    XI <- X[i,]
-    if (sz==3){
-      SIG <- SIGMA[1, ,i]
+    XI <- X[i, ]
+    if (sz == 3){
+      SIG <- SIGMA[1, , i]
     }else if (sz == 2){
       SIG <- SIGMA
     }else {
       SIG <- c()
     }
-    tmp = mvtnorm::dmvnorm(x = t(XI-t(U)), sigma = diag(SIG[,i]))
+    tmp = mvtnorm::dmvnorm(x = t(XI-t(U)), sigma = diag(SIG[, i]))
     maxtmp <- max(tmp)
-    if(maxtmp>tiny){
-      cnt<-cnt+1
-      rowmax[cnt]<-maxtmp
+    if(maxtmp > tiny){
+      cnt <- cnt + 1
+      rowmax[cnt] <- maxtmp
       if(normalizerows){
         L[cnt,] <- pmax(tmp, tiny)/maxtmp
       }else{
