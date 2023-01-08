@@ -162,8 +162,7 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
     }
     if (info_NCG$breakyes>=0) {
       sigma <- max(sigmamin, sigma/10)
-      }
-    else if (iter > 1){
+      }else if (iter > 1){
       if(runhist$dualfeas[iter]/runhist$dualfeas[iter-1] > 0.6){
         if (sigma < 1e7 & primfeas < 100*stoptol){
         sigmascale <- 3
