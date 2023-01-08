@@ -10,7 +10,7 @@ EB_estimator <- function(L, x, U){
   d <- dim(U)[2]
   theta_hat <- matrix(0, n, d)##n*d
   for (i in 1:n){
-    theta_hat[i,] <- (t(x)%*%(L[i,]*U))/Lx[i]
+    theta_hat[i, ] <- (t(x)%*%(L[i, ]*U))/Lx[i]
   }
   return(theta_hat)
 }
