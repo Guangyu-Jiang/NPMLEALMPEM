@@ -165,7 +165,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
       phi_ratio <- (phi - runhist$phi[itersub - 1])/(abs(phi) + eps)
     }
     if (printyes) {
-      print(sprintf(' %3.2e %2.0f', alp, iterstep))
+      #print(sprintf(' %3.2e %2.0f', alp, iterstep))
       if (phi_ratio < 0) {
         #print('-')
       }
@@ -193,7 +193,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
       stagnate_count <- length(stagnate_idx)
       idx2 <- c(max(1, itersub - 7): itersub)
       if ((itersub >= 10) &
-          (any(runhist$solve_ok[idx2] == -1)) &#all to any
+          (any(runhist$solve_ok[idx2] == -1)) &
           (priminf_best < 1e-2) &
           (dualinf_sub < 1e-3)) {
         tmp <- runhist$priminf[idx2]
