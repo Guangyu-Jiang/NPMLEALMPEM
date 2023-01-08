@@ -225,7 +225,7 @@ DualALM <- function(L, options){
   gap <- primobj - dualobj
   relgap <- abs(gap)/(1 + abs(primobj) + abs(dualobj))
   tmp <- t((1/t(Lx))%*%L)/n -1
-  pkkt<-norm(x - pmax(x + tmp, 0), "2")
+  pkkt <- norm(x - pmax(x + tmp, 0), "2")
   pkkt2 <- max(tmp)
   #Record infomation
   runhist <- runhist_main
