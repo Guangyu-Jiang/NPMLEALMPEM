@@ -30,7 +30,7 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
   normu <- norm(u, "2")
   dualfeas <- max(norm(Rd, "2")/n, norm(u - v, "2")/normu)
   maxfeas <- max(primfeas, dualfeas)
-  eta = norm(y - 1/v, "2")/normy
+  eta <- norm(y - 1/v, "2")/normy
   if (printyes){
     cat(sprintf('\n (dimension: m = %d, n = %d, ', m, n))
     cat(sprintf('tol = %1.1e)\n', stoptol))
@@ -59,8 +59,8 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
   ## main loop
   runhist<- list(primfeas = rep(NA, maxiter), dualfeas = rep(NA, maxiter),
          sigma = rep(NA, maxiter), primobj = rep(NA, maxiter),
-         dualobj = rep(NA, maxiter),gap = rep(NA, maxiter),
-         relgap = rep(NA, maxiter), ttime=rep(NA, maxiter),
+         dualobj = rep(NA, maxiter), gap = rep(NA, maxiter),
+         relgap = rep(NA, maxiter), ttime = rep(NA, maxiter),
          ttimessn = rep(NA, maxiter), itersub = rep(NA, maxiter),
          iterCG = rep(NA, maxiter), termination = NULL, iter = NULL
          )
@@ -89,16 +89,16 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
     info_NCG <- MLE_SSNCG_result$info
     ttimessn <- proc.time()[[3]] - tstart_ssn
     if (info_NCG$breakyes < 0){
-    parNCG$tolconst <- max(parNCG$tolconst/1.06,1e-3)
+    parNCG$tolconst <- max(parNCG$tolconst/1.06, 1e-3)
     }
     ## compute KKT residual
     Rp <- Lx - y
     normy <- norm(y, "2")
-    primfeas <- max(norm(Rp, "2")/normy,norm(min(x,0), "2")/norm(x, "2"))
+    primfeas <- max(norm(Rp, "2")/normy, norm(min(x,0), "2")/norm(x, "2"))
     Rd <- pmax(LTv - n, 0)
     normu <- norm(u, "2")
-    dualfeas <- max(norm(Rd, "2")/(n),norm(u - v, "2")/normu)
-    maxfeas <- max(primfeas,dualfeas)
+    dualfeas <- max(norm(Rd, "2")/(n), norm(u - v, "2")/normu)
+    maxfeas <- max(primfeas, dualfeas)
     eta <- norm(y - 1/v, "2")/normy
     ## compute objective values
     primobj <- sum(x) - sum(log(Lx))/n - 1
@@ -109,7 +109,7 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
     if (stopop == 1 & maxfeas < stoptol & eta < stoptol){
       stop <- 1
     }else if (stopop == 2 & (eta < stoptol*10 | maxfeas < stoptol*10)){
-      pkkt <- norm(x - pmax(x + LL$trans(1/(Lx))/n - 1,0), "2")
+      pkkt <- norm(x - pmax(x + LL$trans(1/(Lx))/n - 1, 0), "2")
       parNCG$count_LT <- parNCG$count_LT + 1
       if (pkkt < stoptol){
         stop <- 1
@@ -117,15 +117,15 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
     }else if (stopop == 3 & (eta < stoptol*10 | maxfeas < stoptol*10)){
       tmp <- LL$trans(1/(Lx))/n - 1
       parNCG$count_LT <- parNCG$count_LT + 1
-      pkkt <- norm(x - pmax(x + tmp,0), "2")
+      pkkt <- norm(x - pmax(x + tmp, 0), "2")
       pkkt2 <- max(tmp)
-      if (max(pkkt2,pkkt) < stoptol){
+      if (max(pkkt2, pkkt) < stoptol){
         stop <- 1
       }
     }else if (stopop == 4){
       tmp <- LL$trans(1/(Lx))/n - 1
       parNCG$count_LT <- parNCG$count_LT + 1
-      pkkt <- norm(x - max(x + tmp,0), "2")
+      pkkt <- norm(x - max(x + tmp, 0), "2")
       if (pkkt < stoptol){
         stop <- 1
       }
@@ -161,7 +161,7 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
       break
     }
     if (info_NCG$breakyes>=0) {
-      sigma <- max(sigmamin,sigma/10)
+      sigma <- max(sigmamin, sigma/10)
       }
     else if (iter > 1){
       if(runhist$dualfeas[iter]/runhist$dualfeas[iter-1] > 0.6){
@@ -170,7 +170,7 @@ DualALM_main <- function(LL, parmain, x, y, u, v){
         }else {
         sigmascale = sqrt(3)
         }
-        sigma <- min(sigmamax,sigma*sigmascale)
+        sigma <- min(sigmamax, sigma*sigmascale)
       }
     }
   }
