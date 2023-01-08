@@ -73,7 +73,7 @@ PEM <- function(X, SIGMA, m, options){
       L[,posind]=likelihood_matrix(X, supps_update, SIGMA, NULL, NULL)$L##update L
     }
     else {
-      L=likelihood_matrix(X, supps, SIGMA, NULL, NULL)
+      L=likelihood_matrix(X, supps, SIGMA, NULL, NULL)$L
 
     }
     obj_old <- obj[1]##update history
