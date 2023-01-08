@@ -59,19 +59,18 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
     solve_ok <- result_psqmr$solve_ok
   }
   if (solveby == 'ddirect'){
-    par$approxL=0
     rhs <- rhs*(n^2/sigma)
     prox_v1_prime_m <- prox_v1_prime_m + eps
     if (par$approxL){
       U <- LL$U
       V <- LL$V
-      VJ <- V[J,]
+      VJ <- V[J, ]
       rhstmp <- VJ%*%t(t(rhs/prox_v1_prime_m)%*%U)
       LTL <- VJ%*%(t(U)%*%(U/c(prox_v1_prime_m)))%*%t(VJ)
       for (i in 1:r){
-        LTL[i,i] <- LTL[i,i] + 1
+        LTL[i, i] <- LTL[i, i] + 1
       }
-      if (r<=1000){
+      if (r <= 1000){
         dv <- solve(LTL)%*%rhstmp
       }else {
         cholLTL <- chol(LTL)
@@ -80,11 +79,11 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
       dv <- (U%*%t(t(dv)%*%VJ))/prox_v1_prime_m
       dv <- rhs/prox_v1_prime_m - dv
     }else {
-      if(r==m){
+      if(r == m){
         LJ <- LL$matrix
       }
       else{
-        LJ <-LL$matrix[ ,J]
+        LJ <-LL$matrix[ , J]
       }
       LJ2 <- LJ/c(prox_v1_prime_m)
       rhstmp <- t(t(rhs)%*%LJ2)
@@ -94,7 +93,7 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
         dv <- solve(LTL)%*%rhstmp
       }else{
         cholLTL <- chol(LTL)
-        dv <- mylinsysolve(cholLTL,rhstmp)
+        dv <- mylinsysolve(cholLTL, rhstmp)
       }
       dv <- LJ2%*%dv
       dv <- rhs/prox_v1_prime_m - dv
@@ -102,7 +101,7 @@ Linsolver_MLE <- function(rhs, LL, prox_v1_prime_m, v2, par){
     resnrm <- 0
     solve_ok <- 1
   }
-  if (solveby=='none'){
+  if (solveby == 'none'){
     dv <- rhs/prox_v1_prime_m*10000
     resnrm <- 0
     solve_ok <- 1
