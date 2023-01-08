@@ -167,7 +167,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
     if (printyes) {
       print(sprintf(' %3.2e %2.0f', alp, iterstep))
       if (phi_ratio < 0) {
-        print('-')
+        #print('-')
       }
     }
     ##check for stagnation
@@ -180,7 +180,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
           (ratio > 0.9) &
           (min(runhist$psqmr[idx]) == max(runhist$psqmr[idx])) &
           (max(tmp) < 5*tol)) {
-        print('#')
+        #print('#')
         breakyes <- 1
       }
       const3 <- 0.7
@@ -200,7 +200,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
         ratio <- min(tmp)/max(tmp)
         if (ratio > 0.5) {
           if (printsub) {
-            print('##')
+            #print('##')
           }
           breakyes <- 2
         }
@@ -211,7 +211,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
           (dualinf_sub < 1e-3) &
           (stagnate_count >= 3)) {
         if (printsub) {
-          print('###')
+          #print('###')
         }
         breakyes <- 3
       }
@@ -222,14 +222,14 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
          ((priminf_sub < 2e-3)|((dualinf_sub < 1e-5) & (priminf_sub < 5e-3))) &
          (stagnate_count >= 3)){
         if (printsub) {
-          print(' $$')
+          #print(' $$')
         }
         breakyes <- 4
       }
       if (itersub >=10 & dualinf_sub > 5*min(runhist$dualinf[1:itersub]) &
           priminf_sub > 2*min(runhist$priminf[1:itersub])){
         if (printsub){
-          print('$$$')
+          #print('$$$')
         }
         breakyes <- 5
       }
@@ -240,7 +240,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
           dualinf_increment <- mean(dualinf_ratioall[idx])
           if (dualinf_increment > 1.25) {
             if (printsub) {
-              print('^^')
+              #print('^^')
             }
             breakyes <- 6
           }
