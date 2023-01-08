@@ -17,9 +17,9 @@ PEM <- function(X, SIGMA, m, options){
   stoptol <- 1e-4
   printyes <- 1
   ##initialization of mu
-  n=dim(X)[1]##number of observations
-  if (m<=n){
-    supps <- X[sample(n,m),]
+  n <- dim(X)[1]##number of observations
+  if (m <= n){
+    supps <- X[sample(n, m), ]
     ##random subsample from observations X if m is no larger than n
   }
   if (!is.null(options$supps_initial)){
@@ -64,9 +64,9 @@ PEM <- function(X, SIGMA, m, options){
     posind <- x>0##m'
     sumposind <- sum(posind)
     xtmp <- x[posind]##positive weights m'
-    Ltmp <- L[,posind]##L matrix corresponding to positive weights n*m'
+    Ltmp <- L[, posind]##L matrix corresponding to positive weights n*m'
     Lx <- Ltmp%*%xtmp
-    gamma_hat <- Ltmp*(matrix(1,n,1)%*%t(xtmp))/(Lx%*%matrix(1,1,sumposind))##n*m
+    gamma_hat <- Ltmp*(matrix(1, n, 1)%*%t(xtmp))/(Lx%*%matrix(1, 1, sumposind))##n*m
     supps_update <- (t(gamma_hat)%*%inv_SigmaX)/(t(gamma_hat)%*%inv_Sigma)##m*d
     supps[posind,] <- supps_update
     if (sumposind < m/3){
