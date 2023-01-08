@@ -98,7 +98,7 @@ DualALM <- function(L, options){
       s <- rep(1, n)
   }
   ##LL is created in this part
-  LL<-list(matrix = L, U= NULL, V=NULL, times = NULL, trans = NULL)
+  LL <- list(matrix = L, U = NULL, V = NULL, times = NULL, trans = NULL)
   #construct LL as a list in this part
 
   ##function 2  low rank approximation of L
@@ -196,8 +196,6 @@ DualALM <- function(L, options){
   vnew <- Main_return$v
   info_main <- Main_return$info
   runhist_main <- Main_return$runhist
-  ##[~,xnew,ynew,unew,vnew,info_main,runhist_main]
-  ##ttime = etime(clock,tstart);
   ttime <- proc.time()[[3]] - tstart
   iter <- info_main$iter
   msg <- info_main$msg
@@ -213,26 +211,22 @@ DualALM <- function(L, options){
   Lx <- L %*% x
   Lxorg <- Lx / s
   Rp <- Lxorg - y
-  normy <- norm(y,"2")
+  normy <- norm(y, "2")
   primfeas = max(norm(Rp, "2") / norm(y, "2"), norm(pmin(x, 0), "2") / norm(x, "2"))
-  ## norm gives number
   Rd = pmax((t(vnew) %*% L) - n, 0)
-  ## element-wise maximum values
   normu = norm(u, "2")
-  #normu is a number
   dualfeas = max(norm(Rd, "2") / n, norm(u - v, "2") / normu)
-  #maxover two numbers
   maxfeas = max(primfeas, dualfeas)
-  eta = norm(y - 1 / v, "2") / norm(y, "2")#eta is a number
+  eta = norm(y - 1 / v, "2") / norm(y, "2")
   #compute objective values
-  primobj <- sum(x) + sum(log(s) - log(Lx))/n - 1;
+  primobj <- sum(x) + sum(log(s) - log(Lx))/n - 1
   dualobj <- sum(log(v))/n
   obj <- c(primobj, dualobj)
   gap <- primobj - dualobj
   relgap <- abs(gap)/(1 + abs(primobj) + abs(dualobj))
-  tmp <- t((1/t(Lx))%*%L)/n -1;
+  tmp <- t((1/t(Lx))%*%L)/n -1
   pkkt<-norm(x - pmax(x + tmp, 0), "2")
-  pkkt2 <- max(tmp);
+  pkkt2 <- max(tmp)
   #Record infomation
   runhist <- runhist_main
 
@@ -253,20 +247,20 @@ DualALM <- function(L, options){
   if (printyes) {
     cat("\n****************************************\n")
     cat(sprintf('\n ALM          : %s', msg))
-    cat(sprintf('\n iteration    : %d\n',iter))
-    cat(sprintf(' L operator   : %d\n',info$count_L))
-    cat(sprintf(' LT operator  : %d\n',info$count_LT))
-    cat(sprintf(' time         : %3.2f\n',ttime))
-    cat(sprintf(' prim_obj     : %4.8e\n',primobj))
-    cat(sprintf(' dual_obj     : %4.8e\n',dualobj))
-    cat(sprintf(' relgap       : %4.5e\n',relgap))
-    cat(sprintf(' primfeas     : %3.2e\n',primfeas))
-    cat(sprintf(' dualfeas     : %3.2e\n',dualfeas))
-    cat(sprintf(' eta          : %3.2e\n',eta))
-    cat(sprintf(' primalKKT    : %3.2e\n',pkkt))
-    cat(sprintf(' primalKKT2   : %3.2e\n',pkkt2))
-    cat(sprintf(' -sum(log(Lx)): %1.8e\n',info$sumlogLx))
-    cat(sprintf(' sparsity     : %d\n',sum(x>0)))
+    cat(sprintf('\n iteration    : %d\n', iter))
+    cat(sprintf(' L operator   : %d\n', info$count_L))
+    cat(sprintf(' LT operator  : %d\n', info$count_LT))
+    cat(sprintf(' time         : %3.2f\n', ttime))
+    cat(sprintf(' prim_obj     : %4.8e\n', primobj))
+    cat(sprintf(' dual_obj     : %4.8e\n', dualobj))
+    cat(sprintf(' relgap       : %4.5e\n', relgap))
+    cat(sprintf(' primfeas     : %3.2e\n', primfeas))
+    cat(sprintf(' dualfeas     : %3.2e\n', dualfeas))
+    cat(sprintf(' eta          : %3.2e\n', eta))
+    cat(sprintf(' primalKKT    : %3.2e\n', pkkt))
+    cat(sprintf(' primalKKT2   : %3.2e\n', pkkt2))
+    cat(sprintf(' -sum(log(Lx)): %1.8e\n', info$sumlogLx))
+    cat(sprintf(' sparsity     : %d\n', sum(x>0)))
   }
   return(list(x = x, obj = obj, y = y, u = u, v = v, info = info, runhist = runhist))
 }
