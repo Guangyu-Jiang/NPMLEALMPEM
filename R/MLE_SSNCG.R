@@ -165,8 +165,7 @@ MLE_SSNCG<- function(LL, x, y, v, LTv, par, options){
       phi_ratio <- (phi - runhist$phi[itersub - 1])/(abs(phi) + eps)
     }
     if (printyes) {
-      print(sprintf(' %3.2e', alp))
-      #print(sprintf(' %3.2e %2.0f', alp, iterstep))
+      cat(sprintf(' %3.2e %2.0f', alp, iterstep))
       if (phi_ratio < 0) {
         #print('-')
       }
